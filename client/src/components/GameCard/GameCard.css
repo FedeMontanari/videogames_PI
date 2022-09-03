@@ -1,0 +1,12 @@
+img {
+    max-width: 400px;
+    min-width: 400px;
+    min-height: 225px;
+    max-height: 225px;
+}
+
+.container {
+    /* display: flex; */
+    border: 1px solid black;
+    margin-bottom: 2%;
+}

@@ -64,7 +64,8 @@ router.get("/", async (req, res) => {
           name: e.name,
           image: e.background_image,
           genre: e.genres.map((g) => ({id: g.id, name: g.name})),
-          rating: e.rating
+          rating: e.rating,
+          order: e.added,
         })))
         i++;
         gamePromise = [...gamePromise, apiInfo]

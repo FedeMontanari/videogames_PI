@@ -114,14 +114,14 @@ __Pagina inicial__: deben armar una landing page con
 
 __Ruta principal__: debe contener
 
-- [ ] Input de búsqueda para encontrar videojuegos por nombre
+- [x] Input de búsqueda para encontrar videojuegos por nombre
 - [x] Área donde se verá el listado de videojuegos. Deberá mostrar su:
   - Imagen
   - Nombre
   - Géneros
-- [ ] Botones/Opciones para filtrar por género y por videojuego existente o agregado por nosotros
-- [ ] Botones/Opciones para ordenar tanto ascendentemente como descendentemente los videojuegos por orden alfabético y por rating
-- [ ] Paginado para ir buscando y mostrando los siguientes videojuegos, 15 juegos por pagina, mostrando los primeros 15 en la primer pagina.
+- [x parcial] Botones/Opciones para filtrar por género y por videojuego existente o agregado por nosotros
+- [x] Botones/Opciones para ordenar tanto ascendentemente como descendentemente los videojuegos por orden alfabético y por rating
+- [x] Paginado para ir buscando y mostrando los siguientes videojuegos, 15 juegos por pagina, mostrando los primeros 15 en la primer pagina.
 
 __IMPORTANTE__: Dentro de la Ruta Principal se deben mostrar tanto los videjuegos traidos desde la API como así también los de la base de datos. Debido a que en la API existen alrededor de 500 mil juegos, por cuestiones de performance pueden tomar la simplificación de obtener y paginar los primeras 100.
 

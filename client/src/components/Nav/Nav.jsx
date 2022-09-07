@@ -1,43 +1,56 @@
 import React from "react";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { filterByGenre, getAllGenres, orderByName, orderByRating, searchGame } from "../../redux/actions";
+import {
+  filterByGenre,
+  getAllGenres,
+  orderByName,
+  orderByRating,
+  searchGame,
+  setCurrentPage,
+} from "../../redux/actions";
 
 export default function Nav() {
+  const genres = useSelector((state) => state.genres);
 
-  const genres = useSelector((state) => state.genres)
-
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   const handleOrderChange = (e) => {
-    if(e.target.value.endsWith('name')){
-      dispatch(orderByName(e.target.value))
-      dispatch(orderByRating(''))
-    }else if (e.target.value.endsWith('rating')){
-      dispatch(orderByRating(e.target.value))
-      dispatch(orderByName(''))
-    }else if (e.target.value === 'default'){
-      dispatch(orderByRating(''))
-      dispatch(orderByName(''))
+    dispatch(setCurrentPage(1));
+    if (e.target.value.endsWith("name")) {
+      dispatch(orderByName(e.target.value));
+      dispatch(orderByRating(""));
+    } else if (e.target.value.endsWith("rating")) {
+      dispatch(orderByRating(e.target.value));
+      dispatch(orderByName(""));
+    } else if (e.target.value === "default") {
+      dispatch(orderByRating(""));
+      dispatch(orderByName(""));
     }
-  }
+  };
 
   const handleGenreChange = (e) => {
-    dispatch(filterByGenre(e.target.value))
-  }
+    dispatch(setCurrentPage(1));
+    dispatch(filterByGenre(e.target.value));
+  };
 
   const handleSearchChange = (e) => {
-    dispatch(searchGame(e.target.value))
-  }
+    dispatch(searchGame(e.target.value));
+  };
 
   useEffect(() => {
-    dispatch(getAllGenres())
-  }, [dispatch])
+    dispatch(getAllGenres());
+  }, [dispatch]);
 
   return (
     <>
       <label htmlFor="search">Search a game: </label>
-      <input type="search" id="search" name="search" onChange={handleSearchChange}/>
+      <input
+        type="search"
+        id="search"
+        name="search"
+        onChange={handleSearchChange}
+      />
 
       <label htmlFor="order-by-name">Select an order: </label>
       <select name="order" id="order-by-name" onChange={handleOrderChange}>
@@ -61,32 +74,13 @@ export default function Nav() {
       <label htmlFor="order-by-genre">Select a genre: </label>
       <select name="genre" id="order-by-genre" onChange={handleGenreChange}>
         <option value="">Choose an option</option>
-        {
-          genres.map((g) => {
-            return (
-              <option value={g.name} key={g.name}>
-                {g.name}
-              </option>
-            );
-          })
-        }
-        {/* <option value="action">Action</option>
-        <option value="indie">Indie</option>
-        <option value="adventure">Adventure</option>
-        <option value="rpg">RPG</option>
-        <option value="strategy">Strategy</option>
-        <option value="shooter">Shooter</option>
-        <option value="casual">Casual</option>
-        <option value="simulation">Simulation</option>
-        <option value="puzzle">Puzzle</option>
-        <option value="arcade">Arcade</option>
-        <option value="platformer">Platformer</option>
-        <option value="fighting">Fighting</option>
-        <option value="massively multiplayer">Massively Multiplayer</option>
-        <option value="sports">Sports</option>
-        <option value="family">Family</option>
-        <option value="board-games">Board Games</option>
-        <option value="educational">Educational</option> */}
+        {genres.map((g) => {
+          return (
+            <option value={g.name} key={g.name}>
+              {g.name}
+            </option>
+          );
+        })}
       </select>
     </>
   );

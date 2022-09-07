@@ -1,11 +1,7 @@
-.pagination ul {
+.paginate {
     display: flex;
-}
-
-.pagination {
-    display: flex;
-}
-
-.pagination ul li {
-    display: flex;
+    justify-content: center;
+    gap: 2vw;
+    margin-top: 1vw;
+    margin-bottom: 3vw;
 }

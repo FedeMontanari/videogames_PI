@@ -24,7 +24,7 @@ const Home = () => {
     dispatch(getAllGames());
   }, [dispatch]);
 
-  if (games.length) {
+  if (games.length && loading) {
     dispatch(setLoading(false));
   }
 
@@ -97,8 +97,7 @@ const Home = () => {
   ////////////////////////////////////////////////////////////
 
   return (
-    <div>
-      <h1>Home</h1>
+    <div className="home">
       <Nav />
       <div className="cardContainer">
         {loading ? (

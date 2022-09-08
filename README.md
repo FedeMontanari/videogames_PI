@@ -127,11 +127,11 @@ __IMPORTANTE__: Dentro de la Ruta Principal se deben mostrar tanto los videjuego
 
 __Ruta de detalle de videojuego__: debe contener
 
-- [ ] Los campos mostrados en la ruta principal para cada videojuegos (imagen, nombre, y géneros)
-- [ ] Descripción
-- [ ] Fecha de lanzamiento
-- [ ] Rating
-- [ ] Plataformas
+- [x] Los campos mostrados en la ruta principal para cada videojuegos (imagen, nombre, y géneros)
+- [x] Descripción
+- [x] Fecha de lanzamiento
+- [x] Rating
+- [x] Plataformas
 
 __Ruta de creación de videojuegos__: debe contener
 
@@ -140,9 +140,9 @@ __Ruta de creación de videojuegos__: debe contener
   - Descripción
   - Fecha de lanzamiento
   - Rating
-- [ ] Posibilidad de seleccionar/agregar varios géneros
-- [ ] Posibilidad de seleccionar/agregar varias plataformas
-- [ ] Botón/Opción para crear un nuevo videojuego
+- [x] Posibilidad de seleccionar/agregar varios géneros
+- [x] Posibilidad de seleccionar/agregar varias plataformas
+- [x] Botón/Opción para crear un nuevo videojuego
 
 > Es requisito que el formulario de creación esté validado con JavaScript y no sólo con validaciones HTML. Pueden agregar las validaciones que consideren. Por ejemplo: Que el nombre del juego no pueda contener algunos símbolos, que el rating no pueda exceder determinado valor, etc.
 

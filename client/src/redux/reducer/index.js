@@ -9,7 +9,8 @@ import {
   ORDER_BY_NAME,
   ORDER_BY_RATING,
   FILTER_BY_GENRE,
-  SEARCH_GAME
+  SEARCH_GAME,
+  GET_ALL_PLATFORMS,
 } from "../actions";
 
 const initialState = {
@@ -18,11 +19,12 @@ const initialState = {
   genres: [],
   currentPage: 1,
   loading: false,
-  orderByName: '',
-  orderByRating: '',
-  genreFilter: '',
+  orderByName: "",
+  orderByRating: "",
+  genreFilter: "",
   filteredGames: [],
-  findGames: ''
+  findGames: "",
+  platforms: [],
 };
 
 const rootReducer = (state = initialState, action) => {
@@ -64,34 +66,44 @@ const rootReducer = (state = initialState, action) => {
       };
 
     case SET_LOADING:
-        return {
-            ...state,
-            loading: action.payload,
-        }
+      return {
+        ...state,
+        loading: action.payload,
+      };
 
     case ORDER_BY_NAME:
       return {
         ...state,
         orderByName: action.payload,
-      }
+      };
 
     case ORDER_BY_RATING:
       return {
         ...state,
         orderByRating: action.payload,
-      }
+      };
 
     case FILTER_BY_GENRE:
       return {
         ...state,
-        filteredGames: state.games.filter((g) => g.genre.find((e) => e.name === action.payload)),
-      }
+        filteredGames: state.games.filter((g) =>
+          g.genre.find((e) => e.name === action.payload)
+        ),
+      };
 
     case SEARCH_GAME:
       return {
         ...state,
-        findGames: action.payload
-      }
+        findGames: action.payload,
+      };
+
+    case GET_ALL_PLATFORMS:
+      const allPlatforms = state.games.map((c) => c.platforms.map((p) => p.platform));
+      const platforms = [...new Set(allPlatforms.flat())];
+      return {
+        ...state,
+        platforms: platforms,
+      };
 
     default:
       return state;

@@ -1,6 +1,7 @@
 import React from "react";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 import {
   filterByGenre,
   getAllGenres,
@@ -9,6 +10,7 @@ import {
   searchGame,
   setCurrentPage,
 } from "../../redux/actions";
+import './Nav.css'
 
 export default function Nav() {
   const genres = useSelector((state) => state.genres);
@@ -43,35 +45,49 @@ export default function Nav() {
   }, [dispatch]);
 
   return (
-    <>
+    <div className="navBar">
+    <h1>Home</h1>
+      
+    <div className="searchFilter">
+      <div className="searchBox">
       <label htmlFor="search">Search a game: </label>
       <input
         type="search"
         id="search"
         name="search"
         onChange={handleSearchChange}
-      />
-
-      <label htmlFor="order-by-name">Select an order: </label>
+        />
+      </div>
+      <div className="selectCreate">
+      <Link to='/videogames/create' className="createButton">
+        <input type="button" value="Create a game" />
+      </Link>
+      <div className="apiSelector">
+        {/* <label htmlFor="db-api">From: </label> */}
+        <input type="checkbox" name="api" id="api" defaultChecked />
+        <label htmlFor="api">API</label>
+        <input type="checkbox" name="db" id="db" />
+        <label htmlFor="db">Database</label>
+      </div>
+      </div>
+      </div>
+      <div className="orderBy">
+      <div className="byName">
+      <label htmlFor="order-by-name">Order by: </label>
       <select name="order" id="order-by-name" onChange={handleOrderChange}>
         <option value="">Choose an option</option>
-        <option value=""> --------- </option>
-        <option value="asc-by-name">Ascending by name</option>
-        <option value="desc-by-name">Descending by name</option>
-        <option value=""> --------- </option>
-        <option value="asc-by-rating">Ascending by rating</option>
-        <option value="desc-by-rating">Descending by rating</option>
-        <option value=""> --------- </option>
+        <optgroup label="Name"></optgroup>
+        <option value="asc-by-name">Ascending</option>
+        <option value="desc-by-name">Descending</option>
+        <optgroup label="Rating"></optgroup>
+        <option value="asc-by-rating">Ascending</option>
+        <option value="desc-by-rating">Descending</option>
+        {/* <optgroup label="Default"></optgroup> */}
         <option value="default">Default</option>
       </select>
-
-      <label htmlFor="db-api">Select: </label>
-      <input type="checkbox" name="api" id="api" defaultChecked />
-      <label htmlFor="api">API</label>
-      <input type="checkbox" name="db" id="db" />
-      <label htmlFor="db">Database</label>
-
-      <label htmlFor="order-by-genre">Select a genre: </label>
+      </div>
+      <div className="byGenre">
+      <label htmlFor="order-by-genre">Order by: </label>
       <select name="genre" id="order-by-genre" onChange={handleGenreChange}>
         <option value="">Choose an option</option>
         {genres.map((g) => {
@@ -82,6 +98,9 @@ export default function Nav() {
           );
         })}
       </select>
-    </>
+      </div>
+      </div>
+      
+    </div>
   );
 }

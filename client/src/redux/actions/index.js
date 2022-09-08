@@ -10,6 +10,7 @@ export const ORDER_BY_NAME = "ORDER_BY_NAME";
 export const ORDER_BY_RATING = "ORDER_BY_RATING";
 export const FILTER_BY_GENRE = "FILTER_BY_GENRE";
 export const SEARCH_GAME = "SEARCH_GAME";
+export const GET_ALL_PLATFORMS = "GET_ALL_PLATFORMS";
 
 export const getAllGames = () => (dispatch) => {
   return fetch("http://localhost:3001/videogames")
@@ -99,3 +100,10 @@ export const searchGame = (payload) => {
     payload,
   };
 };
+
+export const getAllPlatforms = (payload) => {
+  return {
+    type: GET_ALL_PLATFORMS,
+    payload,
+  }
+}

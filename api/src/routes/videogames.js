@@ -38,22 +38,6 @@ router.get("/", async (req, res) => {
       res.status(404).send("Game not found");
     }
   } else {
-    //   const apiRequest = axios.get(
-    //     `https://api.rawg.io/api/games?key=${API_KEY}&page_size=20`
-    //   );
-
-    //   Promise.all([apiRequest, dbRequest]).then(([apiRes, dbRes]) => {
-    //     const mapData = apiRes.data.results.map((e) => ({
-    //       id: e.id,
-    //       name: e.name,
-    //       image: e.background_image,
-    //       genre: e.genres,
-    //     }));
-    //     const finalList = dbRes.concat(mapData);
-    //     res.json(finalList);
-    //   });
-    // }
-
     try {
       let i = 1;
       let gamePromise = [];
@@ -66,6 +50,7 @@ router.get("/", async (req, res) => {
           genre: e.genres.map((g) => ({id: g.id, name: g.name})),
           rating: e.rating,
           order: e.added,
+          platforms: e.parent_platforms.map((p) => ({id: p.platform.id, platform: p.platform.name}))
         })))
         i++;
         gamePromise = [...gamePromise, apiInfo]

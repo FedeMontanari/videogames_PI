@@ -8,6 +8,7 @@ import {
   getAllGenres,
   getAllPlatforms,
 } from "../../redux/actions";
+import "./CreateGame.css";
 
 export function validate(input) {
   let errors = {};
@@ -19,7 +20,7 @@ export function validate(input) {
     errors.description = "You must set a description for your videogame!";
   }
 
-  if (input.released < 0) {
+  if (!input.released) {
     errors.released = "You must set a release date for your videogame!";
   }
 
@@ -53,15 +54,29 @@ export default function Form() {
 
   const [errors, setErrors] = useState({});
 
+  const [localGenres, setLocalGenres] = useState([]);
+  const [localPlatforms, setLocalPlatforms] = useState([]);
+
   const dispatch = useDispatch();
 
-  useEffect(async () => {
-    await dispatch(getAllGames());
-    dispatch(getAllPlatforms());
-    dispatch(getAllGenres());
+  useEffect(() => {
+    async function fetchData() {
+      await dispatch(getAllGames());
+      dispatch(getAllPlatforms());
+      dispatch(getAllGenres());
+    }
+    fetchData();
   }, [dispatch]);
 
-  const handleInputChange = function (e) {
+  useEffect(() => {
+    setLocalGenres(genres);
+  }, [dispatch, genres]);
+
+  useEffect(() => {
+    setLocalPlatforms(platforms);
+  }, [dispatch, platforms]);
+
+  const handleInputChange = (e) => {
     setInput({
       ...input,
       [e.target.name]: e.target.value,
@@ -74,12 +89,54 @@ export default function Form() {
     );
   };
 
+  const handleGenreChange = (e) => {
+    if (e.target.value === "null") {
+      return;
+    }
+    let arr = [...input.genre, e.target.value];
+    setInput({
+      ...input,
+      genre: arr,
+    });
+    setLocalGenres(localGenres.filter((g) => g.name !== e.target.value));
+  };
+
+  const handlePlatformChange = (e) => {
+    if (e.target.value === "null") {
+      return;
+    }
+    let arr = [...input.platform, e.target.value];
+    setInput({
+      ...input,
+      platform: arr,
+    });
+    setLocalPlatforms(localPlatforms.filter((p) => p !== e.target.value));
+  };
+
+  const handleGenreRemove = (e) => {
+    let arr = input.genre.filter((g) => g !== e.target.id);
+    setLocalGenres([...localGenres, { name: e.target.id }]);
+    setInput({
+      ...input,
+      genre: arr,
+    });
+  };
+
+  const handlePlatformRemove = (e) => {
+    let arr = input.platform.filter((p) => p !== e.target.id);
+    setLocalPlatforms([...localPlatforms, e.target.id]);
+    setInput({
+      ...input,
+      platform: arr,
+    });
+  };
+
   return (
     <>
       <Link to="/home">Home</Link>
       <h2>Create a new Game!</h2>
       <form action="">
-        <div>
+        <div className="name">
           <label htmlFor="name">Name</label>
           <input
             type="text"
@@ -88,38 +145,122 @@ export default function Form() {
             value={input.name}
             onChange={handleInputChange}
           />
+          {errors.name && <p>{errors.name}</p>}
         </div>
-        <div>
-          <label htmlFor="description">Description</label>
-          <textarea
-            name="description"
-            id="description"
-            rows={5}
-            cols={40}
-            value={input.description}
-            onChange={handleInputChange}
-          />
-        </div>
-        <div>
-          <label htmlFor="released">Release Date</label>
-          <input type="date" name="released" id="released" />
-        </div>
-        <div>
-          <label htmlFor="rating">Rating</label>
-          <input type="number" name="rating" id="rating" max={5} min={0} />
-        </div>
-        <label htmlFor="genre">Genres</label>
-        <select name="genre" id="genre">
-          {genres.map((g) => (
-            <option key={g.id} value={g.name}>{g.name}</option>
-          ))}
-        </select>
-        <label htmlFor="platform">Platforms</label>
-        <select name="platform" id="platform">
-          {platforms.map((p) => (
-            <option key={p} value={p}>{p}</option>
-          ))}
-        </select>
+
+        {input.name ? (
+          <div className="description">
+            <label htmlFor="description">Description</label>
+            <textarea
+              name="description"
+              id="description"
+              rows={5}
+              cols={40}
+              value={input.description}
+              onChange={handleInputChange}
+            />
+            {errors.description && <p>{errors.description}</p>}
+          </div>
+        ) : (
+          <></>
+        )}
+        {input.description ? (
+          <div className="released">
+            <label htmlFor="released">Release Date</label>
+            <input
+              type="date"
+              name="released"
+              id="released"
+              onChange={handleInputChange}
+              value={input.released}
+            />
+            {errors.released && <p>{errors.released}</p>}
+          </div>
+        ) : (
+          <></>
+        )}
+        {input.released ? (
+          <>
+            <div className="rating">
+              <label htmlFor="rating">Rating</label>
+              <input
+                type="number"
+                name="rating"
+                id="rating"
+                max={5}
+                min={0}
+                value={input.rating}
+                onChange={handleInputChange}
+              />
+            </div>
+            <div className="genrePlatform">
+              <label htmlFor="genre">Genres</label>
+              <select
+                name="genre"
+                id="genre"
+                className="genre"
+                onChange={handleGenreChange}
+              >
+                <option value="null">Choose genres</option>
+                {localGenres.map((g) => (
+                  <option key={g.name} value={g.name}>
+                    {g.name}
+                  </option>
+                ))}
+              </select>
+              <label htmlFor="platform">Platforms</label>
+              <select
+                name="platform"
+                id="platform"
+                className="platform"
+                onChange={handlePlatformChange}
+              >
+                <option value="null">Choose platforms</option>
+                {localPlatforms.map((p) => (
+                  <option key={p} value={p}>
+                    {p}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div className="genres">
+              {input.genre ? (
+                input.genre.map((g) => (
+                  <>
+                    <p key={g}>{g}</p>
+                    <input
+                      type="button"
+                      value="X"
+                      id={g}
+                      onClick={handleGenreRemove}
+                    />
+                  </>
+                ))
+              ) : (
+                <></>
+              )}
+            </div>
+            <div className="platforms">
+              {input.platform ? (
+                input.platform.map((p) => (
+                  <>
+                    <p key={p}>{p}</p>
+                    <input
+                      type="button"
+                      value="X"
+                      id={p}
+                      onClick={handlePlatformRemove}
+                    />
+                  </>
+                ))
+              ) : (
+                <></>
+              )}
+            </div>
+          </>
+        ) : (
+          <></>
+        )}
         <input type="submit" value="Create" />
       </form>
     </>

@@ -38,7 +38,7 @@ const Home = () => {
     dispatch(setCurrentPage(Number(e.target.id)));
   };
 
-  ////////////////////////////////////////////////////////////////////////////////
+  /////////////////////////////////////////////////////////////////////
 
   ///////////////////////////Filtering logic///////////////////////////
 
@@ -89,12 +89,13 @@ const Home = () => {
   }
 
   if (searchGames.length) {
+    dispatch(setCurrentPage(1))
     currentGames = games
       .filter((e) => e.name.toLowerCase().includes(searchGames.toLowerCase()))
       .slice(indexOfFirstGame, indexOfLastGame);
   }
 
-  ////////////////////////////////////////////////////////////
+  /////////////////////////////////////////////////////////////////////
 
   return (
     <div className="home">
@@ -114,11 +115,15 @@ const Home = () => {
           ))
         )}
       </div>
-      <Pagination
-        gamesPerPage={gamesPerPage}
-        totalGames={games.length}
-        paginate={paginate}
-      />
+      {searchGames? (
+        <></>
+      ) : (
+        <Pagination
+          gamesPerPage={gamesPerPage}
+          totalGames={games.length}
+          paginate={paginate}
+        />
+        )}
     </div>
   );
 };

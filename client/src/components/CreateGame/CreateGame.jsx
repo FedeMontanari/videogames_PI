@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import {
+  createGame,
   getAllGames,
   getAllGenres,
   getAllPlatforms,
@@ -43,10 +44,11 @@ export default function Form() {
   const [input, setInput] = useState({
     name: "",
     description: "",
-    released: 0,
+    released: "",
     rating: 0,
     genre: [],
     platform: [],
+    image: ''
   });
 
   const genres = useSelector((state) => state.genres);
@@ -90,7 +92,7 @@ export default function Form() {
   };
 
   const handleGenreChange = (e) => {
-    if (e.target.value === "null") {
+    if (e.target.value === input.genre) {
       return;
     }
     let arr = [...input.genre, e.target.value];
@@ -102,7 +104,7 @@ export default function Form() {
   };
 
   const handlePlatformChange = (e) => {
-    if (e.target.value === "null") {
+    if (e.target.value === input.platform) {
       return;
     }
     let arr = [...input.platform, e.target.value];
@@ -131,11 +133,18 @@ export default function Form() {
     });
   };
 
+  // const handleOnSubmit = (e) => {
+  //   e.preventDefault()
+  //   console.log(e)
+  //   dispatch(createGame())
+  //   alert(createGame())
+  // }
+
   return (
     <>
       <Link to="/home">Home</Link>
       <h2>Create a new Game!</h2>
-      <form action="">
+      <form action="http://localhost:3001/videogames" method="POST">
         <div className="name">
           <label htmlFor="name">Name</label>
           <input
@@ -194,28 +203,28 @@ export default function Form() {
               />
             </div>
             <div className="genrePlatform">
-              <label htmlFor="genre">Genres</label>
+              <label htmlFor="genres">Genres</label>
               <select
-                name="genre"
-                id="genre"
+                name="genres"
+                id="genres"
                 className="genre"
                 onChange={handleGenreChange}
               >
-                <option value="null">Choose genres</option>
+                <option value={input.genre}>Choose genres</option>
                 {localGenres.map((g) => (
                   <option key={g.name} value={g.name}>
                     {g.name}
                   </option>
                 ))}
               </select>
-              <label htmlFor="platform">Platforms</label>
+              <label htmlFor="platforms">Platforms</label>
               <select
-                name="platform"
-                id="platform"
+                name="platforms"
+                id="platforms"
                 className="platform"
                 onChange={handlePlatformChange}
               >
-                <option value="null">Choose platforms</option>
+                <option value={input.platform}>Choose platforms</option>
                 {localPlatforms.map((p) => (
                   <option key={p} value={p}>
                     {p}

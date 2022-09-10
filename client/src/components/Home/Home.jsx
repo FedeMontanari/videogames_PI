@@ -89,7 +89,7 @@ const Home = () => {
   }
 
   if (searchGames.length) {
-    dispatch(setCurrentPage(1))
+    dispatch(setCurrentPage(1));
     currentGames = games
       .filter((e) => e.name.toLowerCase().includes(searchGames.toLowerCase()))
       .slice(indexOfFirstGame, indexOfLastGame);
@@ -115,7 +115,7 @@ const Home = () => {
           ))
         )}
       </div>
-      {searchGames? (
+      {searchGames ? (
         <></>
       ) : (
         <Pagination
@@ -123,7 +123,7 @@ const Home = () => {
           totalGames={games.length}
           paginate={paginate}
         />
-        )}
+      )}
     </div>
   );
 };

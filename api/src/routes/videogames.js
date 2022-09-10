@@ -1,7 +1,7 @@
 const { Router } = require("express");
 // Importar todos los routers;
 // Ejemplo: const authRouter = require('./auth.js');
-const { Videogame } = require("../db");
+const { Videogame, Genre } = require("../db");
 const axios = require("axios");
 const { API_KEY } = process.env;
 
@@ -29,7 +29,7 @@ router.get("/", async (req, res) => {
           name: e.name,
           image: e.background_image,
           genre: e.genres,
-          rating: e.rating
+          rating: e.rating,
         }));
         const finalList = dbRes.concat(mapData);
         res.json(finalList);
@@ -42,30 +42,77 @@ router.get("/", async (req, res) => {
       let i = 1;
       let gamePromise = [];
       while (i <= 5) {
-        let currentUrl = axios.get(`https://api.rawg.io/api/games?key=${API_KEY}&page_size=20&page=${i}`)
-        let apiInfo = currentUrl.then((res) => res.data.results.map((e) => ({
-          id: e.id,
-          name: e.name,
-          image: e.background_image,
-          genre: e.genres.map((g) => ({id: g.id, name: g.name})),
-          rating: e.rating,
-          order: e.added,
-          platforms: e.parent_platforms.map((p) => ({id: p.platform.id, platform: p.platform.name}))
-        })))
+        let currentUrl = axios.get(
+          `https://api.rawg.io/api/games?key=${API_KEY}&page_size=20&page=${i}`
+        );
+        let apiInfo = currentUrl.then((res) =>
+          res.data.results.map((e) => ({
+            id: e.id,
+            name: e.name,
+            image: e.background_image,
+            genre: e.genres.map((g) => ({ id: g.id, name: g.name })),
+            rating: e.rating,
+            order: e.added,
+            platforms: e.parent_platforms.map((p) => ({
+              id: p.platform.id,
+              platform: p.platform.name,
+            })),
+          }))
+        );
         i++;
-        gamePromise = [...gamePromise, apiInfo]
+        gamePromise = [...gamePromise, apiInfo];
       }
-      const dbGames = Videogame.findAll();
-      gamePromise.concat(dbGames);
-      // console.log(dbGames)
-      await Promise.all(gamePromise)
-      .then(([a, b, c, d, e, f]) => {
-        const response = a.concat(b, c, d, e)
-        if(f){
-          response.concat(f)
+
+      const getDbInfo = () => {
+        const dbInfo = Videogame.findAll({
+          include: {
+            model: Genre,
+            attributes: ["name"],
+            through: {
+              attributes: [],
+            },
+          },
+        });
+        return dbInfo.then((r) =>
+          r.map((v) => {
+            const {
+              id,
+              name,
+              genres,
+              image,
+              description,
+              released,
+              rating,
+              platforms,
+              created,
+            } = v;
+            const game = {
+              id,
+              name,
+              genres: genres.map((e) => e.name),
+              image,
+              description,
+              released,
+              rating,
+              platforms,
+              created,
+            };
+            return game;
+          })
+        );
+      };
+
+      const dbGames = getDbInfo ()
+
+      gamePromise.push(dbGames);
+      await Promise.all(gamePromise).then(([a, b, c, d, e, f]) => {
+        const response = a.concat(b, c, d, e);
+        if (f.length) {
+          response.push(f);
         }
-        res.send(response)
-      })
+        console.log(f);
+        res.send(response);
+      });
     } catch (error) {
       console.log(error);
     }
@@ -73,8 +120,41 @@ router.get("/", async (req, res) => {
 });
 
 router.post("/", async (req, res) => {
-  const newVideogame = await Videogame.create(req.body);
-  res.status(201).send(newVideogame);
+  try {
+    let { name, description, released, rating, platforms, image, genres } =
+      req.body;
+    genres = genres.split(",");
+    platforms = platforms.split(",");
+    if (
+      name &&
+      description &&
+      released &&
+      rating &&
+      platforms.length &&
+      genres.length
+    ) {
+      Videogame.create({
+        name,
+        description,
+        released,
+        rating,
+        platforms,
+        image,
+      }).then((newGame) => {
+        genres.map((g) => {
+          Genre.findAll({
+            where: { name: g },
+          }).then((genre) => newGame.addGenre(genre));
+        });
+      });
+      res.status(200).send("Juego creado con exito!");
+    } else {
+      res.status(400).send("Faltaron datos para crear el juego");
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(400).send(error);
+  }
 });
 
 module.exports = router;

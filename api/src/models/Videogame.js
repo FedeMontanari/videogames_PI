@@ -13,27 +13,40 @@ module.exports = (sequelize) => {
     name: {
       type: DataTypes.STRING,
       allowNull: false,
+      validate: {
+        notEmpty: true,
+      }
     },
     description: {
       type: DataTypes.TEXT,
       allowNull: false,
+      validate: {
+        notEmpty: true,
+      }
     },
-    release: {
-      type: DataTypes.DATEONLY,
-      defaultValue: DataTypes.NOW
+    released: {
+      type: DataTypes.DATEONLY
     },
     rating: {
-      type: DataTypes.FLOAT
+      type: DataTypes.FLOAT,
+      validate: {
+        isFloat: true
+      }
     },
     platforms: {
-      type: DataTypes.TEXT
+      type: DataTypes.ARRAY(DataTypes.STRING),
+      allowNull: false,
     },
     image: {
       type: DataTypes.STRING,
-      defaultValue: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTiWF7LyIWElDeVViKVeWM2f-tTkNkxVH0fIxUw2AZblw&s"
+      defaultValue: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTiWF7LyIWElDeVViKVeWM2f-tTkNkxVH0fIxUw2AZblw&s",
+      validate: {
+        isUrl: true
+      }
     },
-    genre: {
-      type: DataTypes.STRING
+    created: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: true,
     }
   }, {
     timestamps: false

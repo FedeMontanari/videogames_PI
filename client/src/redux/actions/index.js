@@ -1,4 +1,4 @@
-// const axios = require('axios')
+const axios = require("axios");
 export const GET_ALL_GAMES = "GET_ALL_GAMES";
 export const GET_GAME_BY_ID = "GET_GAME_BY_ID";
 export const GET_ALL_GENRES = "GET_ALL_GENRES";
@@ -52,11 +52,11 @@ export const deleteGame = (id) => {
   };
 };
 
-export const createGame = (newGame) => {
-  return {
-    type: CREATE_GAME,
-    payload: newGame,
-  };
+export const createGame = (data) => {
+  fetch("http://localhost:3001/videogames", {
+    method: "POST",
+    body: data,
+  })
 };
 
 export const setCurrentPage = (payload) => {
@@ -105,5 +105,5 @@ export const getAllPlatforms = (payload) => {
   return {
     type: GET_ALL_PLATFORMS,
     payload,
-  }
-}
+  };
+};

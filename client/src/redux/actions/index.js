@@ -1,4 +1,4 @@
-const axios = require("axios");
+import axios from 'axios'
 export const GET_ALL_GAMES = "GET_ALL_GAMES";
 export const GET_GAME_BY_ID = "GET_GAME_BY_ID";
 export const GET_ALL_GENRES = "GET_ALL_GENRES";
@@ -11,6 +11,10 @@ export const ORDER_BY_RATING = "ORDER_BY_RATING";
 export const FILTER_BY_GENRE = "FILTER_BY_GENRE";
 export const SEARCH_GAME = "SEARCH_GAME";
 export const GET_ALL_PLATFORMS = "GET_ALL_PLATFORMS";
+export const SWITCH_DATA = "SWITCH_DATA";
+export const CREATED_GAME = "CREATED_GAME";
+export const SET_DB_GAME = "SET_DB_GAME";
+export const SET_ACTUAL_GAMES = "SET_ACTUAL_GAMES"
 
 export const getAllGames = () => (dispatch) => {
   return fetch("http://localhost:3001/videogames")
@@ -53,11 +57,11 @@ export const deleteGame = (id) => {
 };
 
 export const createGame = (data) => {
-  fetch("http://localhost:3001/videogames", {
-    method: "POST",
-    body: data,
-  })
-};
+  return async () => {
+    const newGame = await axios.post("http://localhost:3001/videogames", data)
+    return newGame;
+  }
+}
 
 export const setCurrentPage = (payload) => {
   return {
@@ -107,3 +111,31 @@ export const getAllPlatforms = (payload) => {
     payload,
   };
 };
+
+export const switchData = (payload) => {
+  return {
+    type: SWITCH_DATA,
+    payload,
+  };
+};
+
+export const createdGame = (payload) => {
+  return {
+    type: CREATED_GAME,
+    payload,
+  };
+};
+
+export const setDbGame = (payload) => {
+  return {
+    type: SET_DB_GAME,
+    payload,
+  };
+};
+
+export const setActualGames = (payload) => {
+  return {
+    type: SET_ACTUAL_GAMES,
+    payload
+  }
+}

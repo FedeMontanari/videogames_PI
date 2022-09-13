@@ -50,13 +50,14 @@ router.get("/", async (req, res) => {
             id: e.id,
             name: e.name,
             image: e.background_image,
-            genre: e.genres.map((g) => ({ id: g.id, name: g.name })),
+            genres: e.genres.map((g) => ({ id: g.id, name: g.name })),
             rating: e.rating,
             order: e.added,
             platforms: e.parent_platforms.map((p) => ({
               id: p.platform.id,
               platform: p.platform.name,
             })),
+            created: false,
           }))
         );
         i++;
@@ -89,7 +90,7 @@ router.get("/", async (req, res) => {
             const game = {
               id,
               name,
-              genres: genres.map((e) => e.name),
+              genres: genres,
               image,
               description,
               released,
@@ -105,12 +106,12 @@ router.get("/", async (req, res) => {
       const dbGames = getDbInfo ()
 
       gamePromise.push(dbGames);
+      
       await Promise.all(gamePromise).then(([a, b, c, d, e, f]) => {
         const response = a.concat(b, c, d, e);
         if (f.length) {
-          response.push(f);
+          f.map((f) => response.unshift(f))
         }
-        console.log(f);
         res.send(response);
       });
     } catch (error) {
@@ -120,11 +121,19 @@ router.get("/", async (req, res) => {
 });
 
 router.post("/", async (req, res) => {
+  console.log(req.body)
   try {
     let { name, description, released, rating, platforms, image, genres } =
       req.body;
-    genres = genres.split(",");
-    platforms = platforms.split(",");
+      if(genres.length > 1){
+        genres = genres.split(",");
+      }
+      if(platforms.length > 1){
+        platforms = platforms.split(",");
+      }
+      if(!image){
+        image = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTiWF7LyIWElDeVViKVeWM2f-tTkNkxVH0fIxUw2AZblw&s";
+      }
     if (
       name &&
       description &&

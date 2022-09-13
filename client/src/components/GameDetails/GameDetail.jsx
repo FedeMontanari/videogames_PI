@@ -4,8 +4,10 @@ import { Link } from "react-router-dom";
 import { getGameById, setLoading } from "../../redux/actions";
 
 export class GameDetail extends Component {
-  async componentDidMount() {
-    this.props.getGameById(this.props.match.params.gameId);
+  componentDidMount() {
+    if(!this.props.created){
+      this.props.getGameById(this.props.match.params.gameId);
+    }
   }
 
   componentDidUpdate() {
@@ -48,6 +50,7 @@ export const mapStateToProps = (state) => {
   return {
     game: state.game,
     loading: state.loading,
+    created: state.created,
   };
 };
 

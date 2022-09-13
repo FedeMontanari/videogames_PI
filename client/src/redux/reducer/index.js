@@ -11,10 +11,16 @@ import {
   FILTER_BY_GENRE,
   SEARCH_GAME,
   GET_ALL_PLATFORMS,
+  SWITCH_DATA,
+  CREATED_GAME,
+  SET_DB_GAME,
+  SET_ACTUAL_GAMES,
 } from "../actions";
 
 const initialState = {
   games: [],
+  dbGames: [],
+  apiGames: [],
   game: {},
   genres: [],
   currentPage: 1,
@@ -25,6 +31,9 @@ const initialState = {
   filteredGames: [],
   findGames: "",
   platforms: [],
+  data: "api",
+  created: false,
+  actualGames: []
 };
 
 const rootReducer = (state = initialState, action) => {
@@ -33,6 +42,8 @@ const rootReducer = (state = initialState, action) => {
       return {
         ...state,
         games: action.payload,
+        apiGames: action.payload.filter((g) => g.created === false),
+        dbGames: action.payload.filter((g) => g.created === true)
       };
 
     case GET_GAME_BY_ID:
@@ -50,7 +61,7 @@ const rootReducer = (state = initialState, action) => {
     case CREATE_GAME:
       return {
         ...state,
-        games: [...state.games, action.payload],
+        dbGames: [...state.dbGames, action.payload]
       };
 
     case DELETE_GAME:
@@ -86,9 +97,7 @@ const rootReducer = (state = initialState, action) => {
     case FILTER_BY_GENRE:
       return {
         ...state,
-        filteredGames: state.games.filter((g) =>
-          g.genre.find((e) => e.name === action.payload)
-        ),
+        filteredGames: state.actualGames.filter((g) => g.genres.find((e) => e.name === action.payload)),
       };
 
     case SEARCH_GAME:
@@ -98,12 +107,38 @@ const rootReducer = (state = initialState, action) => {
       };
 
     case GET_ALL_PLATFORMS:
-      const allPlatforms = state.games.map((c) => c.platforms.map((p) => p.platform));
+      const allPlatforms = state.apiGames.map((c) =>
+        c.platforms.map((p) => p.platform)
+      );
       const platforms = [...new Set(allPlatforms.flat())];
       return {
         ...state,
         platforms: platforms,
       };
+
+    case SWITCH_DATA:
+      return {
+        ...state,
+        data: action.payload,
+      };
+
+    case CREATED_GAME:
+      return {
+        ...state,
+        created: action.payload,
+      };
+
+    case SET_DB_GAME:
+      return {
+        ...state,
+        game: action.payload,
+      };
+
+    case SET_ACTUAL_GAMES:
+      return {
+        ...state,
+        actualGames: action.payload,
+      }
 
     default:
       return state;

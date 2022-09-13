@@ -9,6 +9,7 @@ import {
   orderByRating,
   searchGame,
   setCurrentPage,
+  switchData,
 } from "../../redux/actions";
 import './Nav.css'
 
@@ -40,13 +41,17 @@ export default function Nav() {
     dispatch(searchGame(e.target.value));
   };
 
+  const handleDataSelector = (e) => {
+    dispatch(switchData(e.target.value))
+  }
+
   useEffect(() => {
     dispatch(getAllGenres());
   }, [dispatch]);
 
   return (
     <div className="navBar">
-    <h1>Home</h1>
+    <h1 className="title">Home</h1>
       
     <div className="searchFilter">
       <div className="searchBox">
@@ -63,11 +68,16 @@ export default function Nav() {
         <input type="button" value="Create a game" />
       </Link>
       <div className="apiSelector">
-        {/* <label htmlFor="db-api">From: </label> */}
-        <input type="checkbox" name="api" id="api" defaultChecked />
+        <select name="data" id="data" onChange={handleDataSelector}>
+          <option disabled selected={true}>Select an origin</option>
+          <option value="api">Api</option>
+          <option value="db">Database</option>
+          <option value="both">Both</option>
+        </select>
+        {/* <input type="checkbox" name="api" id="api" defaultChecked onChange={handleDataSelector}/>
         <label htmlFor="api">API</label>
-        <input type="checkbox" name="db" id="db" />
-        <label htmlFor="db">Database</label>
+        <input type="checkbox" name="db" id="db" onChange={handleDataSelector}/>
+        <label htmlFor="db">Database</label> */}
       </div>
       </div>
       </div>
@@ -75,21 +85,22 @@ export default function Nav() {
       <div className="byName">
       <label htmlFor="order-by-name">Order by: </label>
       <select name="order" id="order-by-name" onChange={handleOrderChange}>
-        <option value="">Choose an option</option>
-        <optgroup label="Name"></optgroup>
-        <option value="asc-by-name">Ascending</option>
-        <option value="desc-by-name">Descending</option>
-        <optgroup label="Rating"></optgroup>
-        <option value="asc-by-rating">Ascending</option>
-        <option value="desc-by-rating">Descending</option>
-        {/* <optgroup label="Default"></optgroup> */}
+        <option disabled selected={true}>Select</option>
+        <optgroup label="Name">
+          <option value="asc-by-name">Ascending</option>
+          <option value="desc-by-name">Descending</option>
+        </optgroup>
+        <optgroup label="Rating">
+          <option value="asc-by-rating">Ascending</option>
+          <option value="desc-by-rating">Descending</option>
+        </optgroup>
         <option value="default">Default</option>
       </select>
       </div>
       <div className="byGenre">
       <label htmlFor="order-by-genre">Order by: </label>
       <select name="genre" id="order-by-genre" onChange={handleGenreChange}>
-        <option value="">Choose an option</option>
+        <option disabled selected={true}>Select</option>
         {genres.map((g) => {
           return (
             <option value={g.name} key={g.name}>

@@ -109,8 +109,8 @@ Se debe desarrollar una aplicación de React/Redux que contenga las siguientes p
 
 __Pagina inicial__: deben armar una landing page con
 
-- [ ] Alguna imagen de fondo representativa al proyecto
-- [ ] Botón para ingresar al home (`Ruta principal`)
+- [x] Alguna imagen de fondo representativa al proyecto
+- [x] Botón para ingresar al home (`Ruta principal`)
 
 __Ruta principal__: debe contener
 
@@ -119,7 +119,7 @@ __Ruta principal__: debe contener
   - Imagen
   - Nombre
   - Géneros
-- [ PARCIAL ] Botones/Opciones para filtrar por género y por videojuego existente o agregado por nosotros
+- [x] Botones/Opciones para filtrar por género y por videojuego existente o agregado por nosotros
 - [x] Botones/Opciones para ordenar tanto ascendentemente como descendentemente los videojuegos por orden alfabético y por rating
 - [x] Paginado para ir buscando y mostrando los siguientes videojuegos, 15 juegos por pagina, mostrando los primeros 15 en la primer pagina.
 
@@ -134,6 +134,8 @@ __Ruta de detalle de videojuego__: debe contener
 - [x] Plataformas
 
 __Ruta de creación de videojuegos__: debe contener
+
+  COMPLETAR FORMULARIO
 
 - [ ] Un formulario __controlado con JavaScript__ con los siguientes campos:
   - Nombre

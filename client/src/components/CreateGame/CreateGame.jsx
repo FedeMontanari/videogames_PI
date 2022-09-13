@@ -2,7 +2,7 @@ import React from "react";
 import { useState } from "react";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import {
   createGame,
   getAllGames,
@@ -29,11 +29,11 @@ export function validate(input) {
     errors.rating = "You must set a rating for your videogame!";
   }
 
-  if (input.genre.length < 0) {
+  if (input.genres.length < 0) {
     errors.genre = "You must set at least 1 genre for your videogame!";
   }
 
-  if (input.platform.length < 0) {
+  if (input.platforms.length < 0) {
     errors.platform = "You must set at least 1 platform for your videogame!";
   }
 
@@ -46,8 +46,8 @@ export default function Form() {
     description: "",
     released: "",
     rating: 0,
-    genre: [],
-    platform: [],
+    genres: [],
+    platforms: [],
     image: ''
   });
 
@@ -60,6 +60,7 @@ export default function Form() {
   const [localPlatforms, setLocalPlatforms] = useState([]);
 
   const dispatch = useDispatch();
+  const history = useHistory()
 
   useEffect(() => {
     async function fetchData() {
@@ -92,59 +93,68 @@ export default function Form() {
   };
 
   const handleGenreChange = (e) => {
-    if (e.target.value === input.genre) {
+    if (e.target.value === input.genres) {
       return;
     }
-    let arr = [...input.genre, e.target.value];
+    let arr = [...input.genres, e.target.value];
     setInput({
       ...input,
-      genre: arr,
+      genres: arr,
     });
     setLocalGenres(localGenres.filter((g) => g.name !== e.target.value));
   };
 
   const handlePlatformChange = (e) => {
-    if (e.target.value === input.platform) {
+    if (e.target.value === input.platforms) {
       return;
     }
-    let arr = [...input.platform, e.target.value];
+    let arr = [...input.platforms, e.target.value];
     setInput({
       ...input,
-      platform: arr,
+      platforms: arr,
     });
     setLocalPlatforms(localPlatforms.filter((p) => p !== e.target.value));
   };
 
   const handleGenreRemove = (e) => {
-    let arr = input.genre.filter((g) => g !== e.target.id);
+    let arr = input.genres.filter((g) => g !== e.target.id);
     setLocalGenres([...localGenres, { name: e.target.id }]);
     setInput({
       ...input,
-      genre: arr,
+      genres: arr,
     });
   };
 
   const handlePlatformRemove = (e) => {
-    let arr = input.platform.filter((p) => p !== e.target.id);
+    let arr = input.platforms.filter((p) => p !== e.target.id);
     setLocalPlatforms([...localPlatforms, e.target.id]);
     setInput({
       ...input,
-      platform: arr,
+      platforms: arr,
     });
   };
 
-  // const handleOnSubmit = (e) => {
-  //   e.preventDefault()
-  //   console.log(e)
-  //   dispatch(createGame())
-  //   alert(createGame())
-  // }
+  const handleOnSubmit = (e) => {
+    e.preventDefault()
+    dispatch(createGame(input))
+    setInput({
+      name: "",
+      description: "",
+      released: "",
+      rating: 0,
+      genres: [],
+      platforms: [],
+      image: ''
+    })
+    alert('Juego creado con exito!')
+    history.push('/home')
+  }
 
   return (
     <>
       <Link to="/home">Home</Link>
       <h2>Create a new Game!</h2>
-      <form action="http://localhost:3001/videogames" method="POST">
+      <form onSubmit={handleOnSubmit}>
         <div className="name">
           <label htmlFor="name">Name</label>
           <input
@@ -210,7 +220,7 @@ export default function Form() {
                 className="genre"
                 onChange={handleGenreChange}
               >
-                <option value={input.genre}>Choose genres</option>
+                <option value={input.genres}>Choose genres</option>
                 {localGenres.map((g) => (
                   <option key={g.name} value={g.name}>
                     {g.name}
@@ -224,7 +234,7 @@ export default function Form() {
                 className="platform"
                 onChange={handlePlatformChange}
               >
-                <option value={input.platform}>Choose platforms</option>
+                <option value={input.platforms}>Choose platforms</option>
                 {localPlatforms.map((p) => (
                   <option key={p} value={p}>
                     {p}
@@ -233,8 +243,8 @@ export default function Form() {
               </select>
             </div>
             <div className="genres">
-              {input.genre ? (
-                input.genre.map((g) => (
+              {input.genres ? (
+                input.genres.map((g) => (
                   <>
                     <p key={g}>{g}</p>
                     <input
@@ -250,8 +260,8 @@ export default function Form() {
               )}
             </div>
             <div className="platforms">
-              {input.platform ? (
-                input.platform.map((p) => (
+              {input.platforms ? (
+                input.platforms.map((p) => (
                   <>
                     <p key={p}>{p}</p>
                     <input
@@ -268,9 +278,9 @@ export default function Form() {
             </div>
           </>
         ) : (
-          <></>
-        )}
-        <input type="submit" value="Create" />
+          <></>   
+        )}    
+        <input type="submit" value="Create"/>
       </form>
     </>
   );

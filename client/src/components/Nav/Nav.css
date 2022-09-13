@@ -10,7 +10,7 @@
     gap: 5%;
 }
 
-h1 {
+.title {
     position: absolute;
     left: 5vh;
 }

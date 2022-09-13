@@ -33,7 +33,7 @@ const initialState = {
   platforms: [],
   data: "api",
   created: false,
-  actualGames: []
+  actualGames: [],
 };
 
 const rootReducer = (state = initialState, action) => {
@@ -43,7 +43,7 @@ const rootReducer = (state = initialState, action) => {
         ...state,
         games: action.payload,
         apiGames: action.payload.filter((g) => g.created === false),
-        dbGames: action.payload.filter((g) => g.created === true)
+        dbGames: action.payload.filter((g) => g.created === true),
       };
 
     case GET_GAME_BY_ID:
@@ -61,7 +61,7 @@ const rootReducer = (state = initialState, action) => {
     case CREATE_GAME:
       return {
         ...state,
-        dbGames: [...state.dbGames, action.payload]
+        dbGames: [...state.dbGames, action.payload],
       };
 
     case DELETE_GAME:
@@ -83,10 +83,10 @@ const rootReducer = (state = initialState, action) => {
       };
 
     case ORDER_BY_NAME:
-      return {
-        ...state,
-        orderByName: action.payload,
-      };
+    return {
+      ...state,
+      orderByName: action.payload,
+    };
 
     case ORDER_BY_RATING:
       return {
@@ -97,7 +97,10 @@ const rootReducer = (state = initialState, action) => {
     case FILTER_BY_GENRE:
       return {
         ...state,
-        filteredGames: state.actualGames.filter((g) => g.genres.find((e) => e.name === action.payload)),
+        genreFilter: action.payload,
+        filteredGames: state.actualGames.filter((g) =>
+          g.genres.find((e) => e.name === action.payload)
+        ),
       };
 
     case SEARCH_GAME:
@@ -138,7 +141,7 @@ const rootReducer = (state = initialState, action) => {
       return {
         ...state,
         actualGames: action.payload,
-      }
+      };
 
     default:
       return state;

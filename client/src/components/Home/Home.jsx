@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  filterByGenre,
   getAllGames,
   setActualGames,
   setCurrentPage,
@@ -12,10 +13,10 @@ import Nav from "../Nav/Nav";
 import "./Home.css";
 
 const Home = () => {
-  let games = useSelector((state) => state.games);
+  const games = useSelector((state) => state.games);
   const gamesApi = useSelector((state) => state.apiGames);
   const gamesDb = useSelector((state) => state.dbGames);
-  const actualGames = useSelector((state) => state.actualGames)
+  const actualGames = useSelector((state) => state.actualGames);
 
   const selector = useSelector((state) => state.data);
 
@@ -29,6 +30,7 @@ const Home = () => {
 
   const byName = useSelector((state) => state.orderByName);
   const byRating = useSelector((state) => state.orderByRating);
+  const genreFilter = useSelector((state) => state.genreFilter);
 
   const dispatch = useDispatch();
 
@@ -37,6 +39,12 @@ const Home = () => {
     dispatch(getAllGames());
   }, [dispatch]);
 
+  const variations = [byName, byRating, genreFilter];
+
+  // useEffect(() => {
+  //   dispatch(setActualGames(actualGames))
+  // }, [variations])
+
   if (games.length && loading) {
     dispatch(setLoading(false));
   }
@@ -44,27 +52,27 @@ const Home = () => {
   switch (selector) {
     case "api":
       // games = [...gamesApi];
-      dispatch(setActualGames(gamesApi))
+      dispatch(setActualGames(gamesApi));
       break;
 
     case "db":
       if (!gamesDb) {
         // games = [...gamesApi];
-        dispatch(setActualGames(gamesApi))
+        dispatch(setActualGames(gamesApi));
         break;
       } else {
         // games = [...gamesDb];
-        dispatch(setActualGames(gamesDb))
+        dispatch(setActualGames(gamesDb));
         break;
       }
 
     case "both":
       if (!gamesDb) {
         // games = [...gamesApi];
-        dispatch(setActualGames(gamesApi))
+        dispatch(setActualGames(gamesApi));
         break;
       } else {
-        dispatch(setActualGames(games))
+        dispatch(setActualGames(games));
       }
     default:
       break;
@@ -75,7 +83,6 @@ const Home = () => {
   const indexOfLastGame = currentPage * gamesPerPage;
   const indexOfFirstGame = indexOfLastGame - gamesPerPage;
   let currentGames = actualGames.slice(indexOfFirstGame, indexOfLastGame);
-  // console.log(currentGames);
 
   const paginate = (e) => {
     dispatch(setCurrentPage(Number(e.target.id)));
@@ -85,41 +92,49 @@ const Home = () => {
 
   ///////////////////////////Filtering logic///////////////////////////
 
-  if (byName.startsWith("asc")) {
-    actualGames.sort((a, b) => {
-      let ga = a.name.toLowerCase();
-      let gb = b.name.toLowerCase();
-      if (ga < gb) {
-        return -1;
-      }
-      if (ga > gb) {
-        return 1;
-      }
-      return 0;
-    });
-  } else if (byName.startsWith("desc")) {
-    actualGames.sort((a, b) => {
-      let ga = a.name.toLowerCase();
-      let gb = b.name.toLowerCase();
-      if (ga > gb) {
-        return -1;
-      }
-      if (ga < gb) {
-        return 1;
-      }
-      return 0;
-    });
+  const nameSort = () => {
+    if (byName.startsWith("asc")) {
+      actualGames.sort((a, b) => {
+        let ga = a.name.toLowerCase();
+        let gb = b.name.toLowerCase();
+        if (ga < gb) {
+          return -1;
+        }
+        if (ga > gb) {
+          return 1;
+        }
+        return 0;
+      });
+    } else if (byName.startsWith("desc")) {
+      actualGames.sort((a, b) => {
+        let ga = a.name.toLowerCase();
+        let gb = b.name.toLowerCase();
+        if (ga > gb) {
+          return -1;
+        }
+        if (ga < gb) {
+          return 1;
+        }
+        return 0;
+      });
+    }
   }
 
-  if (byRating.startsWith("asc")) {
-    actualGames.sort((a, b) => {
-      return a.rating - b.rating;
-    });
-  } else if (byRating.startsWith("desc")) {
-    actualGames.sort((a, b) => {
-      return b.rating - a.rating;
-    });
+  nameSort()
+
+  const rateSort = () => {
+    if (byRating.startsWith("asc")) {
+      actualGames.sort((a, b) => {
+        return a.rating - b.rating;
+      });
+    } else if (byRating.startsWith("desc")) {
+      actualGames.sort((a, b) => {
+        return b.rating - a.rating;
+      });
+    }
   }
+
+  rateSort()
 
   if (!byRating && !byName) {
     actualGames.sort((a, b) => {
@@ -129,6 +144,8 @@ const Home = () => {
 
   if (filteredGames.length) {
     currentGames = filteredGames.slice(indexOfFirstGame, indexOfLastGame);
+    nameSort();
+    rateSort();
   }
 
   if (searchGames.length) {
@@ -155,7 +172,9 @@ const Home = () => {
       ) : (
         <Pagination
           gamesPerPage={gamesPerPage}
-          totalGames={filteredGames.length ? filteredGames.length : actualGames.length}
+          totalGames={
+            filteredGames.length ? filteredGames.length : actualGames.length
+          }
           paginate={paginate}
         />
       )}

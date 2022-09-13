@@ -15,6 +15,10 @@ import './Nav.css'
 
 export default function Nav() {
   const genres = useSelector((state) => state.genres);
+  // const actualGames = useSelector((state) => state.actualGames)
+  // const genreFilter = useSelector((state) => state.genreFilter)
+  // const byName = useSelector((state) => state.orderByName)
+  // const byRating = useSelector((state) => state.orderByRating)
 
   const dispatch = useDispatch();
 
@@ -49,6 +53,12 @@ export default function Nav() {
     dispatch(getAllGenres());
   }, [dispatch]);
 
+  // useEffect(() => {
+  //   dispatch(filterByGenre(genreFilter));
+  //   // dispatch(orderByName(byName));
+  //   // dispatch(orderByRating(byRating));
+  // }, [currentGames])
+
   return (
     <div className="navBar">
     <h1 className="title">Home</h1>
@@ -74,10 +84,6 @@ export default function Nav() {
           <option value="db">Database</option>
           <option value="both">Both</option>
         </select>
-        {/* <input type="checkbox" name="api" id="api" defaultChecked onChange={handleDataSelector}/>
-        <label htmlFor="api">API</label>
-        <input type="checkbox" name="db" id="db" onChange={handleDataSelector}/>
-        <label htmlFor="db">Database</label> */}
       </div>
       </div>
       </div>

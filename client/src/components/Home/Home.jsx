@@ -30,7 +30,6 @@ const Home = () => {
 
   const byName = useSelector((state) => state.orderByName);
   const byRating = useSelector((state) => state.orderByRating);
-  const genreFilter = useSelector((state) => state.genreFilter);
 
   const dispatch = useDispatch();
 
@@ -38,12 +37,6 @@ const Home = () => {
     dispatch(setLoading(true));
     dispatch(getAllGames());
   }, [dispatch]);
-
-  const variations = [byName, byRating, genreFilter];
-
-  // useEffect(() => {
-  //   dispatch(setActualGames(actualGames))
-  // }, [variations])
 
   if (games.length && loading) {
     dispatch(setLoading(false));
@@ -93,6 +86,20 @@ const Home = () => {
   ///////////////////////////Filtering logic///////////////////////////
 
   const nameSort = () => {
+    if (byName.startsWith("asc") && filteredGames.length) {
+      filteredGames.sort((a, b) => {
+        let ga = a.name.toLowerCase();
+        let gb = b.name.toLowerCase();
+        if (ga < gb) {
+          return -1;
+        }
+        if (ga > gb) {
+          return 1;
+        }
+        return 0;
+      });
+    }
+
     if (byName.startsWith("asc")) {
       actualGames.sort((a, b) => {
         let ga = a.name.toLowerCase();
@@ -105,7 +112,23 @@ const Home = () => {
         }
         return 0;
       });
-    } else if (byName.startsWith("desc")) {
+    }
+
+    if (byName.startsWith("desc") && filteredGames.length) {
+      filteredGames.sort((a, b) => {
+        let ga = a.name.toLowerCase();
+        let gb = b.name.toLowerCase();
+        if (ga > gb) {
+          return -1;
+        }
+        if (ga < gb) {
+          return 1;
+        }
+        return 0;
+      });
+    }
+
+    if (byName.startsWith("desc")) {
       actualGames.sort((a, b) => {
         let ga = a.name.toLowerCase();
         let gb = b.name.toLowerCase();
@@ -118,23 +141,37 @@ const Home = () => {
         return 0;
       });
     }
-  }
+  };
 
-  nameSort()
+  nameSort();
 
   const rateSort = () => {
+    if (byRating.startsWith("asc") && filteredGames.length) {
+      filteredGames.sort((a, b) => {
+        return a.rating - b.rating;
+      });
+    }
+
     if (byRating.startsWith("asc")) {
       actualGames.sort((a, b) => {
         return a.rating - b.rating;
       });
-    } else if (byRating.startsWith("desc")) {
+    }
+
+    if (byRating.startsWith("desc") && filteredGames.length) {
+      filteredGames.sort((a, b) => {
+        return b.rating - a.rating;
+      });
+    }
+
+    if (byRating.startsWith("desc")) {
       actualGames.sort((a, b) => {
         return b.rating - a.rating;
       });
     }
-  }
+  };
 
-  rateSort()
+  rateSort();
 
   if (!byRating && !byName) {
     actualGames.sort((a, b) => {
@@ -144,8 +181,6 @@ const Home = () => {
 
   if (filteredGames.length) {
     currentGames = filteredGames.slice(indexOfFirstGame, indexOfLastGame);
-    nameSort();
-    rateSort();
   }
 
   if (searchGames.length) {

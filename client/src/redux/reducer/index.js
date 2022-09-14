@@ -27,7 +27,6 @@ const initialState = {
   loading: false,
   orderByName: "",
   orderByRating: "",
-  genreFilter: "",
   filteredGames: [],
   findGames: "",
   platforms: [],

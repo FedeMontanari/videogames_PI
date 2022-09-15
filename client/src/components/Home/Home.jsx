@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   filterByGenre,
   getAllGames,
+  searchGame,
   setActualGames,
   setCurrentPage,
   setLoading,
@@ -36,6 +37,7 @@ const Home = () => {
   useEffect(() => {
     dispatch(setLoading(true));
     dispatch(getAllGames());
+    dispatch(searchGame(''))
   }, [dispatch]);
 
   if (games.length && loading) {

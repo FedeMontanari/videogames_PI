@@ -160,4 +160,18 @@ router.post("/", async (req, res) => {
   }
 });
 
+router.delete("/:id", async (req, res) => {
+  try {
+    await Videogame.destroy({
+      where: {
+        id: req.params.id
+      }
+    })
+    res.status(200).send('Game deleted correctly!')
+  } catch (error) {
+    console.log(error)
+    res.status(400).send(error)
+  }
+})
+
 module.exports = router;

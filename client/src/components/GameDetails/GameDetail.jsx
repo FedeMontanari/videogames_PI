@@ -2,10 +2,11 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import { getGameById, setLoading } from "../../redux/actions";
+import "./GameDetail.css";
 
 export class GameDetail extends Component {
   componentDidMount() {
-    if(!this.props.created){
+    if (!this.props.created) {
       this.props.getGameById(this.props.match.params.gameId);
     }
   }
@@ -21,26 +22,45 @@ export class GameDetail extends Component {
       return <h3>Loading...</h3>;
     } else {
       return (
-        <>
-          <Link to="/home">Home</Link>
-          <img src={this.props.game.image} alt="" />
-          <h2>{this.props.game.name}</h2>
-          <div
-            dangerouslySetInnerHTML={{ __html: this.props.game.description }}
-          />
-          <h4>Rating: </h4>
-          <p>{this.props.game.rating} / 5</p>
-          <h4>Release date: </h4>
-          <p>{this.props.game.released}</p>
-          <h4>Platforms: </h4>
-          {this.props.game.platforms.map((p) => (
-            <p key={p.id}>{p.name}</p>
-          ))}
-          <h4>Genres: </h4>
-          {this.props.game.genres.map((g) => (
-            <p key={g.id}>{g.name}</p>
-          ))}
-        </>
+        <div className="detailWrapper">
+          <div className="detailHome">
+            <Link to="/home" className="detailLink">
+              Home
+            </Link>
+          </div>
+          <div className="detailContainer">
+            <img
+              src={this.props.game.image}
+              alt="Game portrait"
+              className="detailImage"
+            />
+            <h2 className="detailTitle">{this.props.game.name}</h2>
+            <div
+              dangerouslySetInnerHTML={{ __html: this.props.game.description }}
+              className="detailDesc"
+            />
+            <div className="detailInfo">
+              <div className="detailRateRelease">
+                <h4>Rating: </h4>
+                <p>{this.props.game.rating} / 5</p>
+                <h4>Release date: </h4>
+                <p>{this.props.game.released}</p>
+              </div>
+              <div className="detailPlat">
+                <h4>Platforms: </h4>
+                {this.props.game.platforms.map((p) => (
+                  <p key={p.id}>{p.name}</p>
+                ))}
+              </div>
+              <div className="detailGen">
+                <h4>Genres: </h4>
+                {this.props.game.genres.map((g) => (
+                  <p key={g.id}>{g.name}</p>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
       );
     }
   }

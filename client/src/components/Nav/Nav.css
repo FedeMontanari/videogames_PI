@@ -1,6 +1,6 @@
 .navBar {
     display: flex;
-    align-items: center;
+    align-items: baseline   ;
     justify-content: flex-end;
     position: fixed;
     top: 0;
@@ -13,7 +13,11 @@
 
 .title {
     position: absolute;
-    left: 5vh;
+    left: 15%;
+    top: 0.5%;
+    border: 3px solid black;
+    border-radius: 10px;
+    height: 50%;
 }
 
 .orderBy {
@@ -33,7 +37,7 @@
     flex-direction: column;
     height: 100%;
     gap: 10%;
-    margin-top: 4.5vh;
+    margin-top: 1vh;
 }
 
 .searchFilter .searchBox .apiSelector {

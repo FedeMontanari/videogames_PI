@@ -166,11 +166,13 @@ export default function Form() {
   };
 
   return (
-    <>
-      <Link to="/home">Home</Link>
+    <div className="formWrapper">
+      <div className="formHome">
+      <Link to="/home" className="formLink">Home</Link>
+      </div>
+      <form onSubmit={handleOnSubmit} className="formCreate">
       <h2>Create a new Game!</h2>
-      <form onSubmit={handleOnSubmit}>
-        <div className="name">
+        <div className="formName">
           <label htmlFor="name">Name</label>
           <input
             type="text"
@@ -183,7 +185,7 @@ export default function Form() {
         </div>
 
         {input.name ? (
-          <div className="description">
+          <div className="formDescription">
             <label htmlFor="description">Description</label>
             <textarea
               name="description"
@@ -199,8 +201,8 @@ export default function Form() {
           <></>
         )}
 
-        {input.name && input.description  ? (
-          <div className="image">
+        {input.name && input.description ? (
+          <div className="formImage">
             <label htmlFor="image">Cover Image</label>
             <input
               type="url"
@@ -220,8 +222,11 @@ export default function Form() {
           <></>
         )}
 
-        {input.name && input.description && input.image && !errors.invalidImage ? (
-          <div className="released">
+        {input.name &&
+        input.description &&
+        input.image &&
+        !errors.invalidImage ? (
+          <div className="formReleased">
             <label htmlFor="released">Release Date</label>
             <input
               type="date"
@@ -236,8 +241,12 @@ export default function Form() {
           <></>
         )}
 
-        {input.name && input.description && input.image && !errors.invalidImage && input.released ? (
-          <div className="rating">
+        {input.name &&
+        input.description &&
+        input.image &&
+        !errors.invalidImage &&
+        input.released ? (
+          <div className="formRating">
             <label htmlFor="rating">Rating</label>
             <input
               type="number"
@@ -254,94 +263,109 @@ export default function Form() {
           <></>
         )}
 
-        {input.name && input.description && input.image && !errors.invalidImage && input.released && input.rating ? (
-          <div className="genrePlatform">
-            <label htmlFor="genres">Genres</label>
-            <select
-              name="genres"
-              id="genres"
-              className="genre"
-              onChange={handleGenreChange}
-            >
-              <option value={input.genres}>Choose genres</option>
-              {localGenres.map((g) => (
-                <option key={g.name} value={g.name}>
-                  {g.name}
-                </option>
-              ))}
-            </select>
+        {input.name &&
+        input.description &&
+        input.image &&
+        !errors.invalidImage &&
+        input.released &&
+        input.rating ? (
+          <>
+            <div className="genresPlatforms">
+              <div className="formGenres">
+                <label htmlFor="genres">Genres</label>
+                <select
+                  name="genres"
+                  id="genres"
+                  className="genre"
+                  onChange={handleGenreChange}
+                >
+                  <option value={input.genres}>Choose genres</option>
+                  {localGenres.map((g) => (
+                    <option key={g.name} value={g.name}>
+                      {g.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
 
-            <label htmlFor="platforms">Platforms</label>
-            <select
-              name="platforms"
-              id="platforms"
-              className="platform"
-              onChange={handlePlatformChange}
-            >
-              <option value={input.platforms}>Choose platforms</option>
-              {localPlatforms.map((p) => (
-                <option key={p} value={p}>
-                  {p}
-                </option>
-              ))}
-            </select>
-
-            <div className="genres">
-              {input.genres ? (
-                input.genres.map((g) => (
-                  <>
-                    <p key={g}>{g}</p>
-                    <input
-                      type="button"
-                      value="X"
-                      id={g}
-                      onClick={handleGenreRemove}
-                    />
-                  </>
-                ))
-              ) : (
-                <p>{errors.genres}</p>
-              )}
+              <div className="formPlatforms">
+                <label htmlFor="platforms">Platforms</label>
+                <select
+                  name="platforms"
+                  id="platforms"
+                  className="platform"
+                  onChange={handlePlatformChange}
+                >
+                  <option value={input.platforms}>Choose platforms</option>
+                  {localPlatforms.map((p) => (
+                    <option key={p} value={p}>
+                      {p}
+                    </option>
+                  ))}
+                </select>
+              </div>
             </div>
 
-            <div className="platforms">
-              {input.platforms ? (
-                input.platforms.map((p) => (
-                  <>
-                    <p key={p}>{p}</p>
-                    <input
-                      type="button"
-                      value="X"
-                      id={p}
-                      onClick={handlePlatformRemove}
-                    />
-                  </>
-                ))
-              ) : (
-                <></>
-              )}
+            <div className="genresPlatformsButtons">
+              <div className="genres">
+                {input.genres ? (
+                  input.genres.map((g) => (
+                    <div className="formIndividualGenPlat">
+                      <p key={g}>{g}</p>
+                      <input
+                        type="button"
+                        value="X"
+                        id={g}
+                        onClick={handleGenreRemove}
+                        className="genresButton"
+                      />
+                    </div>
+                  ))
+                ) : (
+                  <p>{errors.genres}</p>
+                )}
+              </div>
+
+              <div className="platforms">
+                {input.platforms ? (
+                  input.platforms.map((p) => (
+                    <div className="formIndividualGenPlat">
+                      <p key={p}>{p}</p>
+                      <input
+                        type="button"
+                        value="X"
+                        id={p}
+                        onClick={handlePlatformRemove}
+                        className="platformsButton"
+                      />
+                    </div>
+                  ))
+                ) : (
+                  <></>
+                )}
+              </div>
             </div>
             {input.genres.length && input.platforms.length ? (
-              <input type="submit" value="Create" />
-            ) : (
-              <>
-                {!input.genres.length ? (
-                  errors.genres && <p>{errors.genres}</p>
-                ) : (
-                  <></>
-                )}
-                {!input.platforms.length ? (
-                  errors.platforms && <p>{errors.platforms}</p>
-                ) : (
-                  <></>
-                )}
-              </>
-            )}
-          </div>
+                <input type="submit" value="Create" className="formSubmit"/>
+              ) : (
+                <>
+                  {!input.genres.length ? (
+                    errors.genres && <p>{errors.genres}</p>
+                  ) : (
+                    <></>
+                  )}
+                  {!input.platforms.length ? (
+                    errors.platforms && <p>{errors.platforms}</p>
+                  ) : (
+                    <></>
+                  )}
+                </>
+              )}
+          </>
         ) : (
           <></>
         )}
       </form>
-    </>
+    </div>
   );
 }

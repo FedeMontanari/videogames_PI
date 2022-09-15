@@ -48,13 +48,13 @@ export class GameDetail extends Component {
               </div>
               <div className="detailPlat">
                 <h4>Platforms: </h4>
-                {this.props.game.platforms.map((p) => (
+                {this.props.game.platforms?.map((p) => (
                   <p key={p.id}>{p.name}</p>
                 ))}
               </div>
               <div className="detailGen">
                 <h4>Genres: </h4>
-                {this.props.game.genres.map((g) => (
+                {this.props.game.genres?.map((g) => (
                   <p key={g.id}>{g.name}</p>
                 ))}
               </div>

@@ -11,14 +11,10 @@ import {
   setCurrentPage,
   switchData,
 } from "../../redux/actions";
-import './Nav.css'
+import "./Nav.css";
 
 export default function Nav() {
-  const genres = useSelector((state) => state.genres);
-  // const actualGames = useSelector((state) => state.actualGames)
-  // const genreFilter = useSelector((state) => state.genreFilter)
-  // const byName = useSelector((state) => state.orderByName)
-  // const byRating = useSelector((state) => state.orderByRating)
+  const games = useSelector((state) => state.games);
 
   const dispatch = useDispatch();
 
@@ -46,78 +42,82 @@ export default function Nav() {
   };
 
   const handleDataSelector = (e) => {
-    dispatch(switchData(e.target.value))
-  }
+    dispatch(switchData(e.target.value));
+  };
 
   useEffect(() => {
     dispatch(getAllGenres());
   }, [dispatch]);
 
-  // useEffect(() => {
-  //   dispatch(filterByGenre(genreFilter));
-  //   // dispatch(orderByName(byName));
-  //   // dispatch(orderByRating(byRating));
-  // }, [currentGames])
+  const allGenres = games?.map((g) => g.genres.map((e) => e.name));
+
+  const availGenres = [...new Set(allGenres.flat())];
 
   return (
     <div className="navBar">
-    <h1 className="title">Home</h1>
-      
-    <div className="searchFilter">
-      <div className="searchBox">
-      <label htmlFor="search">Search a game: </label>
-      <input
-        type="search"
-        id="search"
-        name="search"
-        onChange={handleSearchChange}
-        />
-      </div>
-      <div className="selectCreate">
-      <Link to='/videogames/create' className="createButton">
-        <input type="button" value="Create a game" />
-      </Link>
-      <div className="apiSelector">
-        <select name="data" id="data" onChange={handleDataSelector}>
-          <option disabled selected={true}>Select an origin</option>
-          <option value="both">Both</option>
-          <option value="api">Api</option>
-          <option value="db">Database</option>
-        </select>
-      </div>
-      </div>
+      <h1 className="title">Home</h1>
+
+      <div className="searchFilter">
+        <div className="searchBox">
+          <label htmlFor="search">Search a game: </label>
+          <input
+            type="search"
+            id="search"
+            name="search"
+            onChange={handleSearchChange}
+          />
+        </div>
+        <div className="selectCreate">
+          <Link to="/videogames/create" className="createButton">
+            <input type="button" value="Create a game" />
+          </Link>
+          <div className="apiSelector">
+            <select name="data" id="data" onChange={handleDataSelector}>
+              <option disabled selected={true}>
+                Select an origin
+              </option>
+              <option value="both">Both</option>
+              <option value="api">Api</option>
+              <option value="db">Database</option>
+            </select>
+          </div>
+        </div>
       </div>
       <div className="orderBy">
-      <div className="byName">
-      <label htmlFor="order-by-name">Order by: </label>
-      <select name="order" id="order-by-name" onChange={handleOrderChange}>
-        <option disabled selected={true}>Select</option>
-        <optgroup label="Name">
-          <option value="asc-by-name">Ascending</option>
-          <option value="desc-by-name">Descending</option>
-        </optgroup>
-        <optgroup label="Rating">
-          <option value="asc-by-rating">Ascending</option>
-          <option value="desc-by-rating">Descending</option>
-        </optgroup>
-        <option value="default">Default</option>
-      </select>
-      </div>
-      <div className="byGenre">
-      <label htmlFor="order-by-genre">Order by: </label>
-      <select name="genre" id="order-by-genre" onChange={handleGenreChange}>
-        <option disabled selected={true}>Select</option>
-        {genres.map((g) => {
-          return (
-            <option value={g.name} key={g.name}>
-              {g.name}
+        <div className="byName">
+          <label htmlFor="order-by-name">Order by: </label>
+          <select name="order" id="order-by-name" onChange={handleOrderChange}>
+            <option disabled selected={true}>
+              Select
             </option>
-          );
-        })}
-      </select>
+            <optgroup label="Name">
+              <option value="asc-by-name">Ascending</option>
+              <option value="desc-by-name">Descending</option>
+            </optgroup>
+            <optgroup label="Rating">
+              <option value="asc-by-rating">Ascending</option>
+              <option value="desc-by-rating">Descending</option>
+            </optgroup>
+            <option value="default">Default</option>
+          </select>
+        </div>
+        <div className="byGenre">
+          <label htmlFor="order-by-genre">Order by: </label>
+          <select name="genre" id="order-by-genre" onChange={handleGenreChange}>
+            <option disabled selected={true}>
+              Select
+            </option>
+            <option value="default">Default</option>
+            {availGenres?.map((g) => {
+              return (
+                <option value={g} key={g}>
+                  {g}
+                </option>
+              );
+            })}
+          </select>
+        </div>
       </div>
-      </div>
-      
     </div>
   );
 }

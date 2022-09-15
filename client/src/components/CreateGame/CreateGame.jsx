@@ -199,7 +199,7 @@ export default function Form() {
           <></>
         )}
 
-        {input.description ? (
+        {input.name && input.description  ? (
           <div className="image">
             <label htmlFor="image">Cover Image</label>
             <input
@@ -220,7 +220,7 @@ export default function Form() {
           <></>
         )}
 
-        {input.image && !errors.invalidImage ? (
+        {input.name && input.description && input.image && !errors.invalidImage ? (
           <div className="released">
             <label htmlFor="released">Release Date</label>
             <input
@@ -236,7 +236,7 @@ export default function Form() {
           <></>
         )}
 
-        {input.released ? (
+        {input.name && input.description && input.image && !errors.invalidImage && input.released ? (
           <div className="rating">
             <label htmlFor="rating">Rating</label>
             <input
@@ -254,7 +254,7 @@ export default function Form() {
           <></>
         )}
 
-        {input.rating ? (
+        {input.name && input.description && input.image && !errors.invalidImage && input.released && input.rating ? (
           <div className="genrePlatform">
             <label htmlFor="genres">Genres</label>
             <select

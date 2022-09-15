@@ -14,8 +14,6 @@ const GameCard = (props) => {
       className="container"
       onClick={() => {
         dispatch(setLoading(true));
-        dispatch(setDbGame(props.game));
-        dispatch(createdGame(props.game.created))
       }}
     >
       <img src={props.game.image? props.game.image : {vgportrait}} alt="Videogame portrait" className="cardImage"/>

@@ -6,9 +6,7 @@ import "./GameDetail.css";
 
 export class GameDetail extends Component {
   componentDidMount() {
-    if (!this.props.created) {
-      this.props.getGameById(this.props.match.params.gameId);
-    }
+    this.props.getGameById(this.props.match.params.gameId);
   }
 
   componentDidUpdate() {

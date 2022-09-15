@@ -115,22 +115,16 @@ router.get("/", async (req, res) => {
         res.send(response);
       });
     } catch (error) {
-      console.log(error);
+      console.log(error)
+      res.status(400).send(error)
     }
   }
 });
 
 router.post("/", async (req, res) => {
-  console.log(req.body)
   try {
     let { name, description, released, rating, platforms, image, genres } =
       req.body;
-      if(genres.length > 1){
-        genres = genres.split(",");
-      }
-      if(platforms.length > 1){
-        platforms = platforms.split(",");
-      }
       if(!image){
         image = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTiWF7LyIWElDeVViKVeWM2f-tTkNkxVH0fIxUw2AZblw&s";
       }

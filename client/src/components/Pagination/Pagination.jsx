@@ -19,6 +19,7 @@ export const Pagination = ({ gamesPerPage, totalGames, paginate }) => {
     <nav className="paginate">
       {pageNumbers.map((number) => (
         <button
+          className="paginateButton"
           key={number}
           id={number}
           onClick={(e) => {

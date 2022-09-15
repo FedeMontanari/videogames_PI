@@ -11,12 +11,10 @@ import {
 } from "../../redux/actions";
 import "./CreateGame.css";
 
-
-
 export function validate(input) {
   let errors = {};
 
-  let regex = /(http(s?):\/\/.*\.(?:png|jpg))/i
+  let regex = /(http(s?):\/\/.*\.(?:png|jpg))/i;
 
   if (!input.name) {
     errors.name = "You must set a name for your videogame!";
@@ -27,31 +25,31 @@ export function validate(input) {
   }
 
   if (!input.image) {
-    errors.image = "You must set a cover image for your videogame!"
+    errors.image = "You must set a cover image for your videogame!";
   }
 
   if (!regex.test(input.image)) {
-    errors.invalidImage = "You must set a valid URL for an image!"
+    errors.invalidImage = "You must set a valid URL for an image!";
   }
 
   if (!input.released) {
     errors.released = "You must set a release date for your videogame!";
   }
 
-  if (input.rating < 0) {
+  if (!input.rating) {
     errors.rating = "You must set a rating for your videogame!";
   }
 
   if (input.genres.length <= 0) {
     errors.genres = "You must set at least 1 genre for your videogame!";
-  } else if (input.genres.lenght > 0){
+  } else if (input.genres.lenght > 0) {
     errors.genres = "";
   }
 
   if (input.platforms.length <= 0) {
     errors.platforms = "You must set at least 1 platform for your videogame!";
-  } else if (input.platforms.length > 0){
-    errors.platforms = ""
+  } else if (input.platforms.length > 0) {
+    errors.platforms = "";
   }
 
   return errors;
@@ -62,12 +60,11 @@ export default function Form() {
     name: "",
     description: "",
     released: "",
-    rating: 0,
+    rating: "",
     genres: [],
     platforms: [],
     image: "",
   });
-  
 
   const genres = useSelector((state) => state.genres);
   const platforms = useSelector((state) => state.platforms);
@@ -213,23 +210,28 @@ export default function Form() {
               value={input.image}
             />
             {errors.image && <p>{errors.image}</p>}
+            {!errors.image ? (
+              errors.invalidImage && <p>{errors.invalidImage}</p>
+            ) : (
+              <></>
+            )}
           </div>
         ) : (
           <></>
         )}
 
-        {!errors.invalidImage && input.image ? (
+        {input.image && !errors.invalidImage ? (
           <div className="released">
-          <label htmlFor="released">Release Date</label>
-          <input
-            type="date"
-            name="released"
-            id="released"
-            onChange={handleInputChange}
-            value={input.released}
-          />
-          {errors.released && <p>{errors.released}</p>}
-        </div>
+            <label htmlFor="released">Release Date</label>
+            <input
+              type="date"
+              name="released"
+              id="released"
+              onChange={handleInputChange}
+              value={input.released}
+            />
+            {errors.released && <p>{errors.released}</p>}
+          </div>
         ) : (
           <></>
         )}
@@ -319,10 +321,21 @@ export default function Form() {
                 <></>
               )}
             </div>
-            {input.genres && input.platforms ? (
+            {input.genres.length && input.platforms.length ? (
               <input type="submit" value="Create" />
             ) : (
-              <></>
+              <>
+                {!input.genres.length ? (
+                  errors.genres && <p>{errors.genres}</p>
+                ) : (
+                  <></>
+                )}
+                {!input.platforms.length ? (
+                  errors.platforms && <p>{errors.platforms}</p>
+                ) : (
+                  <></>
+                )}
+              </>
             )}
           </div>
         ) : (

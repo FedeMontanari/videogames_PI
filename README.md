@@ -137,7 +137,7 @@ __Ruta de creación de videojuegos__: debe contener
 
   COMPLETAR FORMULARIO
 
-- [ ] Un formulario __controlado con JavaScript__ con los siguientes campos:
+- [x] Un formulario __controlado con JavaScript__ con los siguientes campos:
   - Nombre
   - Descripción
   - Fecha de lanzamiento

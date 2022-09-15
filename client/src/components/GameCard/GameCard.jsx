@@ -3,6 +3,7 @@ import "./GameCard.css";
 import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { createdGame, setLoading, setDbGame } from "../../redux/actions";
+import vgportrait from "../../assets/vgportrait.jpg"
 
 const GameCard = (props) => {
   const dispatch = useDispatch();
@@ -17,9 +18,9 @@ const GameCard = (props) => {
         dispatch(createdGame(props.game.created))
       }}
     >
-      <img src={props.game.image} alt="Videogame portrait" />
-      <p>Name: {props.game.name}</p>
-      <p>Genre: {props.game.genres.map((e) => `${e.name} `)}</p>
+      <img src={props.game.image? props.game.image : {vgportrait}} alt="Videogame portrait" className="cardImage"/>
+      <p className="pTitle">Name: </p> <p className="pContent">{props.game.name}</p>
+      <p className="pTitle">Genre: </p> <p className="pContent">{props.game.genres.map((e) => `● ${e.name} `)}</p>
     </Link>
   );
 };

@@ -7,4 +7,20 @@
 
 .home {
     padding-top: 10vh;
+    padding-bottom: 1vh;
+    background: rgb(8,92,93);
+    background: linear-gradient(0deg, rgba(8,92,93,1) 0%, rgba(136,190,191,1) 100%);
+    height: fit-content;
+    width: 100%;
+}
+
+.loading {
+    font-size: 3rem;
+    font-weight: 600;
+    height: 70vh;
+    width: 100%;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }

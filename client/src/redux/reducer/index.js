@@ -30,7 +30,7 @@ const initialState = {
   filteredGames: [],
   findGames: "",
   platforms: [],
-  data: "api",
+  data: "both",
   created: false,
   actualGames: [],
 };

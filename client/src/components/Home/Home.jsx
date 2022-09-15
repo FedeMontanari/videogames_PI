@@ -42,32 +42,35 @@ const Home = () => {
     dispatch(setLoading(false));
   }
 
+
   switch (selector) {
     case "api":
-      // games = [...gamesApi];
       dispatch(setActualGames(gamesApi));
       break;
 
     case "db":
-      if (!gamesDb) {
-        // games = [...gamesApi];
+      if (!gamesDb.length) {
         dispatch(setActualGames(gamesApi));
         break;
       } else {
-        // games = [...gamesDb];
         dispatch(setActualGames(gamesDb));
         break;
       }
 
     case "both":
-      if (!gamesDb) {
-        // games = [...gamesApi];
+      if (!gamesDb.length) {
         dispatch(setActualGames(gamesApi));
         break;
       } else {
         dispatch(setActualGames(games));
       }
     default:
+      if (!gamesDb.length) {
+        dispatch(setActualGames(gamesApi));
+        break;
+      } else {
+        dispatch(setActualGames(games));
+      }
       break;
   }
 
@@ -173,11 +176,20 @@ const Home = () => {
 
   rateSort();
 
-  if (!byRating && !byName) {
-    actualGames.sort((a, b) => {
-      return b.order - a.order;
-    });
+  const defaultSort = () => {
+    if (!byRating && !byName && filteredGames.length){
+      filteredGames.sort((a, b) => {
+        return b.order - a.order
+      })
+    }
+    if (!byRating && !byName) {
+      actualGames.sort((a, b) => {
+        return b.order - a.order;
+      });
+    }
   }
+
+  defaultSort()
 
   if (filteredGames.length) {
     currentGames = filteredGames.slice(indexOfFirstGame, indexOfLastGame);
@@ -195,9 +207,20 @@ const Home = () => {
   return (
     <div className="home">
       <Nav />
+      {searchGames ? (
+        <></>
+      ) : (
+        <Pagination
+          gamesPerPage={gamesPerPage}
+          totalGames={
+            filteredGames.length ? filteredGames.length : actualGames.length
+          }
+          paginate={paginate}
+        />
+      )}
       <div className="cardContainer">
         {loading ? (
-          <h3>Loading...</h3>
+          <h3 className="loading">Loading...</h3>
         ) : (
           currentGames.map((g) => <GameCard game={g} />)
         )}

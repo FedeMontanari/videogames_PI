@@ -80,9 +80,9 @@ export default function Nav() {
       <div className="apiSelector">
         <select name="data" id="data" onChange={handleDataSelector}>
           <option disabled selected={true}>Select an origin</option>
+          <option value="both">Both</option>
           <option value="api">Api</option>
           <option value="db">Database</option>
-          <option value="both">Both</option>
         </select>
       </div>
       </div>

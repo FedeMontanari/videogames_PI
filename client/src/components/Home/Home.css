@@ -8,10 +8,23 @@
 .home {
     padding-top: 10vh;
     padding-bottom: 1vh;
-    background: rgb(8,92,93);
-    background: linear-gradient(0deg, rgba(8,92,93,1) 0%, rgba(136,190,191,1) 100%);
     height: fit-content;
     width: 100%;
+    position: relative;
+    background-color: rgba(12, 4, 42, 0.8);
+}
+
+.home::before {
+    content: "";
+    background-image: url('../../assets/generalbg.png');
+    background-size: cover;
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    bottom: 0px;
+    left: 0px;
+    opacity: 0.9;
+    z-index: -1;
 }
 
 .loading {

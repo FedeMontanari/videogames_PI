@@ -9,6 +9,7 @@ export class GameDetail extends Component {
     this.props.getGameById(this.props.match.params.gameId);
   }
 
+
   componentDidUpdate() {
     if (this.props.game !== undefined) {
       this.props.setLoading(false);

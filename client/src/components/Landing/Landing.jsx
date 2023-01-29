@@ -10,7 +10,7 @@ function Landing () {
                 <source src={background} type="video/webm" />
             </video>
             <div className="content">
-                <h1 className="landingTitle">App name</h1>
+                <h1 className="landingTitle">Insomniac Games</h1>
                 <Link to='/home' className="link">Start</Link>
             </div>
         </div>

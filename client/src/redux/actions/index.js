@@ -17,7 +17,7 @@ export const SET_DB_GAME = "SET_DB_GAME";
 export const SET_ACTUAL_GAMES = "SET_ACTUAL_GAMES"
 
 export const getAllGames = () => (dispatch) => {
-  return fetch("http://localhost:3001/videogames")
+  return fetch("https://videogamespi-production-6339.up.railway.app/videogames")
     .then((res) => res.json())
     .then((data) =>
       dispatch({
@@ -28,7 +28,7 @@ export const getAllGames = () => (dispatch) => {
 };
 
 export const getAllGenres = () => (dispatch) => {
-  return fetch("http://localhost:3001/genres")
+  return fetch("https://videogamespi-production-6339.up.railway.app/genres")
     .then((res) => res.json())
     .then((data) =>
       dispatch({
@@ -39,7 +39,7 @@ export const getAllGenres = () => (dispatch) => {
 };
 
 export const getGameById = (id) => (dispatch) => {
-  return fetch(`http://localhost:3001/videogame/${id}`)
+  return fetch(`https://videogamespi-production-6339.up.railway.app/videogame/${id}`)
     .then((res) => res.json())
     .then((data) =>
       dispatch({
@@ -58,7 +58,7 @@ export const deleteGame = (id) => {
 
 export const createGame = (data) => {
   return async () => {
-    const newGame = await axios.post("http://localhost:3001/videogames", data)
+    const newGame = await axios.post("https://videogamespi-production-6339.up.railway.app/videogames", data)
     return newGame;
   }
 }

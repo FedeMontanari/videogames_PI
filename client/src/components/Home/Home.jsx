@@ -37,13 +37,12 @@ const Home = () => {
   useEffect(() => {
     dispatch(setLoading(true));
     dispatch(getAllGames());
-    dispatch(searchGame(''))
+    dispatch(searchGame(""));
   }, [dispatch]);
 
   if (games.length && loading) {
     dispatch(setLoading(false));
   }
-
 
   switch (selector) {
     case "api":
@@ -179,19 +178,19 @@ const Home = () => {
   rateSort();
 
   const defaultSort = () => {
-    if (!byRating && !byName && filteredGames.length){
+    if (!byRating && !byName && filteredGames.length) {
       filteredGames.sort((a, b) => {
-        return b.order - a.order
-      })
+        return b.order - a.order;
+      });
     }
     if (!byRating && !byName) {
       actualGames.sort((a, b) => {
         return b.order - a.order;
       });
     }
-  }
+  };
 
-  defaultSort()
+  defaultSort();
 
   if (filteredGames.length) {
     currentGames = filteredGames.slice(indexOfFirstGame, indexOfLastGame);
